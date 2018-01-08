@@ -1,0 +1,39 @@
+apply plugin: 'java'
+
+version '0.1.0'
+group 'com.avairebot'
+description = 'AvaIre Wrapper'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext {
+    moduleName = 'Wrapper'
+}
+
+tasks.withType(JavaCompile) {
+    dependsOn 'clean'
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:-unchecked"
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'AvaIre: Wrapper',
+                'Implementation-Version': version,
+                'Main-Class': 'com.avairebot.wrapper.Main'
+    }
+
+    baseName = project.name
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
