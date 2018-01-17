@@ -1,4 +1,4 @@
-package com.avairebot.wrapper;
+package com.avairebot.watchdog;
 
 import com.avairebot.shared.ExitCodes;
 
@@ -73,7 +73,7 @@ public class ApplicationBootstrap extends Thread {
         lastBoot = System.currentTimeMillis();
 
         if (recentBoots >= 4) {
-            System.out.println("[AVA-WRAPPER] Failed to restart 3 times, probably due to login errors. Exiting...");
+            Logger.info("Failed to restart 3 times, probably due to login errors. Exiting...");
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 

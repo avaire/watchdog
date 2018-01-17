@@ -1,4 +1,4 @@
-package com.avairebot.wrapper;
+package com.avairebot.watchdog;
 
 import java.io.BufferedReader;
 import java.io.IOException;

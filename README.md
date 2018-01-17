@@ -1,13 +1,13 @@
-AvaIre Wrapper
+AvaIre Watchdog
 ============
 
-AvaIre Wrapper is an application built for the Discord bot [AvaIre](https://github.com/avaire/avaire), the wrapper will auto-manage [AvaIre](https://github.com/avaire/avaire) by starting, restarting and updating the bot, the wrapper also comes with a terminal that allows you to see the output and interact with the bot.
+AvaIre Watchdog is an application built for the Discord bot [AvaIre](https://github.com/avaire/avaire), the app will help manage [AvaIre](https://github.com/avaire/avaire) by starting, restarting and updating the bot, the application also comes with a terminal that allows you to see the output and interact with the bot.
 
 More information coming soon...
 
 ## License
 
-AvaIre Wrapper is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+AvaIre Watchdog is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 ---
 

@@ -2,13 +2,13 @@ apply plugin: 'java'
 
 version '0.1.1'
 group 'com.avairebot'
-description = 'AvaIre Wrapper'
+description = 'AvaIre Watchdog'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 ext {
-    moduleName = 'Wrapper'
+    moduleName = 'Watchdog'
 }
 
 tasks.withType(JavaCompile) {
@@ -19,9 +19,9 @@ tasks.withType(JavaCompile) {
 
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'AvaIre: Wrapper',
+        attributes 'Implementation-Title': 'AvaIre: Watchdog',
             'Implementation-Version': version,
-            'Main-Class': 'com.avairebot.wrapper.Main'
+            'Main-Class': 'com.avairebot.watchdog.Main'
     }
 
     baseName = project.name
