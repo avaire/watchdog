@@ -1,14 +1,32 @@
-apply plugin: 'java'
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+}
 
-version '0.1.1'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+version '0.1.2'
 group 'com.avairebot'
 description = 'AvaIre Watchdog'
+mainClassName = 'com.avairebot.watchdog.Main'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 ext {
     moduleName = 'Watchdog'
+}
+
+shadowJar {
+    archiveName = "Watchdog.jar"
+
+    doLast {
+        copy {
+            from 'build/libs/Watchdog.jar'
+            into '.'
+        }
+    }
 }
 
 tasks.withType(JavaCompile) {
@@ -36,6 +54,6 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.github.avaire', name: 'Shared', version: '5c6d09f1a021c50f2c3686821c21ce632776e425'
+    compile group: 'com.github.avaire', name: 'Shared', version: 'e0ec78fd82'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
