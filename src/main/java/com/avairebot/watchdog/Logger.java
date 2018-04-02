@@ -11,4 +11,8 @@ public class Logger {
     public static void error(String message) {
         System.err.println(prefix + message);
     }
+
+    public String getPrefix() {
+        return prefix;
+    }
 }

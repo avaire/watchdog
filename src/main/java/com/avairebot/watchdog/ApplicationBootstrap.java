@@ -50,6 +50,7 @@ public class ApplicationBootstrap extends Thread {
                     case 130:
                     case ExitCodes.EXIT_CODE_NORMAL:
                         Logger.info("Now shutting down...");
+                        shutdown();
                         break OUTER;
 
                     // SIGINT received or clean exit
