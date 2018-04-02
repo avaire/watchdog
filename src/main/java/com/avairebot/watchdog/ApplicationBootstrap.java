@@ -2,11 +2,9 @@ package com.avairebot.watchdog;
 
 import com.avairebot.shared.ExitCodes;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ApplicationBootstrap extends Thread {
 
@@ -44,7 +42,7 @@ public class ApplicationBootstrap extends Thread {
                 switch (process.exitValue()) {
                     case ExitCodes.EXIT_CODE_UPDATE:
                         Logger.info("Now updating...");
-                        // TODO: Make the bot actually update here...
+                        updateOrInstallAvaIre();
                         break;
 
                     case 130:
@@ -62,6 +60,32 @@ public class ApplicationBootstrap extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void updateOrInstallAvaIre() {
+        Logger.info("Updating git repo and re-compiling jar file");
+
+        File avaireDirectory = new File("avaire");
+        CommandProcessResult result = Main.runCommandAndReturnOutput(Arrays.asList(
+            "cd avaire", "git pull", "gradle build"
+        ), true);
+
+        if (!result.isSuccess()) {
+            System.exit(0);
+        }
+
+        File jarFile = new File(avaireDirectory, "AvaIre.jar");
+
+        if (!jarFile.exists()) {
+            Logger.error("Failed to find AvaIar.jar file within the sources directory! Did something go wrong?");
+            System.exit(0);
+        }
+
+        File oldJar = new File("./AvaIre.jar");
+        oldJar.delete();
+
+        jarFile.renameTo(oldJar);
+        Logger.info("AvaIre has been successfully updated!");
     }
 
     private Process boot() throws IOException {

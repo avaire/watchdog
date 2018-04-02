@@ -1,9 +1,6 @@
 package com.avairebot.watchdog;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +21,22 @@ public class Main {
         }
 
         ApplicationBootstrap bootstrap = new ApplicationBootstrap();
+
+        File avaireDirectory = new File("avaire");
+        if (!avaireDirectory.exists() || !avaireDirectory.isDirectory()) {
+            Logger.info("AvaIre sources was not found, using git to clone down sources...");
+            CommandProcessResult result = Main.runCommandAndReturnOutput(
+                Collections.singletonList("git clone https://github.com/avaire/avaire.git avaire")
+            );
+
+            if (!result.isSuccess()) {
+                Logger.error("Error occurred while trying to update Ava: " + result.getResult());
+                result.printStacktrace();
+                System.exit(result.getException().hashCode());
+            }
+            Logger.info("AvaIre sources has been cloned down successfully");
+            bootstrap.updateOrInstallAvaIre();
+        }
 
         bootstrap.start();
 
@@ -68,7 +81,11 @@ public class Main {
         return false;
     }
 
-    private static CommandProcessResult runCommandAndReturnOutput(List<String> commands) {
+    public static CommandProcessResult runCommandAndReturnOutput(List<String> commands) {
+        return runCommandAndReturnOutput(commands, false);
+    }
+
+    public static CommandProcessResult runCommandAndReturnOutput(List<String> commands, boolean sendOutputDuringRuntime) {
         try {
             Runtime runtime = Runtime.getRuntime();
 
@@ -81,6 +98,9 @@ public class Main {
                 String line;
                 StringBuilder result = new StringBuilder();
                 while ((line = reader.readLine()) != null) {
+                    if (sendOutputDuringRuntime) {
+                        System.out.println(line);
+                    }
                     result.append(line);
                     result.append("\n");
                 }
