@@ -1,12 +1,19 @@
 package com.avairebot.watchdog;
 
 import com.avairebot.shared.ExitCodes;
+import com.avairebot.watchdog.states.ShutdownState;
+import com.avairebot.watchdog.states.UpdateState;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class ApplicationBootstrap extends Thread {
+public class Application extends Thread {
+
+    private final UpdateState updateState;
+    private final ShutdownState shutdownState;
 
     private boolean running = true;
 
@@ -14,6 +21,11 @@ public class ApplicationBootstrap extends Thread {
     private long lastBoot = 0L;
 
     private Process process;
+
+    Application() {
+        this.updateState = new UpdateState(this);
+        this.shutdownState = new ShutdownState(this);
+    }
 
     @Override
     public void run() {
@@ -42,13 +54,13 @@ public class ApplicationBootstrap extends Thread {
                 switch (process.exitValue()) {
                     case ExitCodes.EXIT_CODE_UPDATE:
                         Logger.info("Now updating...");
-                        updateOrInstallAvaIre();
+                        updateState.run();
                         break;
 
                     case 130:
                     case ExitCodes.EXIT_CODE_NORMAL:
                         Logger.info("Now shutting down...");
-                        shutdown();
+                        shutdownState.run();
                         break OUTER;
 
                     // SIGINT received or clean exit
@@ -60,32 +72,6 @@ public class ApplicationBootstrap extends Thread {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void updateOrInstallAvaIre() {
-        Logger.info("Updating git repo and re-compiling jar file");
-
-        File avaireDirectory = new File("avaire");
-        CommandProcessResult result = Main.runCommandAndReturnOutput(Arrays.asList(
-            "cd avaire", "git pull", "gradle build"
-        ), true);
-
-        if (!result.isSuccess()) {
-            System.exit(0);
-        }
-
-        File jarFile = new File(avaireDirectory, "AvaIre.jar");
-
-        if (!jarFile.exists()) {
-            Logger.error("Failed to find AvaIar.jar file within the sources directory! Did something go wrong?");
-            System.exit(0);
-        }
-
-        File oldJar = new File("./AvaIre.jar");
-        oldJar.delete();
-
-        jarFile.renameTo(oldJar);
-        Logger.info("AvaIre has been successfully updated!");
     }
 
     private Process boot() throws IOException {
@@ -119,13 +105,15 @@ public class ApplicationBootstrap extends Thread {
         return process;
     }
 
-    public void shutdown() {
-        running = false;
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
-        if (getProcess() != null) {
-            getProcess().destroy();
-        }
+    UpdateState getUpdateState() {
+        return updateState;
+    }
 
-        System.exit(0);
+    ShutdownState getShutdownState() {
+        return shutdownState;
     }
 }
