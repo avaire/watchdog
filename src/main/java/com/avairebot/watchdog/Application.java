@@ -3,20 +3,20 @@ package com.avairebot.watchdog;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.watchdog.states.ShutdownState;
 import com.avairebot.watchdog.states.UpdateState;
+import org.apache.commons.cli.CommandLine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Application extends Thread {
 
     private final UpdateState updateState;
     private final ShutdownState shutdownState;
 
-    private final String[] applicationArguments;
+    private final CommandLine commandArguments;
 
     private boolean running = true;
 
@@ -25,11 +25,27 @@ public class Application extends Thread {
 
     private Process process;
 
-    Application(String[] args) {
-        this.applicationArguments = args;
+    Application(CommandLine commandLine) throws IOException {
+        this.commandArguments = commandLine;
 
         this.updateState = new UpdateState(this);
         this.shutdownState = new ShutdownState(this);
+
+        if (!Main.avaireJar.exists()) {
+            Logger.info("AvaIre sources was not found!");
+            updateState.run();
+        }
+
+        start();
+
+        BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
+
+        String consoleLine;
+        while ((consoleLine = consoleReader.readLine()) != null) {
+            if (consoleLine.equalsIgnoreCase("shutdown")) {
+                shutdownState.run();
+            }
+        }
     }
 
     @Override
@@ -99,11 +115,18 @@ public class Application extends Thread {
         ArrayList<String> list = new ArrayList<>();
 
         list.add("java");
-        list.add("-Dfile.encoding=UTF-8");
+
+        if (Main.isWindows) {
+            list.add("-Dfile.encoding=UTF-8");
+        }
+        ArgumentHandler.addJVMArguments(commandArguments, list);
+
         list.add("-jar");
         list.add("AvaIre.jar");
 
-        Collections.addAll(list, applicationArguments);
+        ArgumentHandler.addApplicationArguments(commandArguments, list);
+
+        Logger.info("Starting process: " + String.join(" ", list));
 
         pb.command(list);
 
@@ -116,13 +139,5 @@ public class Application extends Thread {
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    UpdateState getUpdateState() {
-        return updateState;
-    }
-
-    ShutdownState getShutdownState() {
-        return shutdownState;
     }
 }
