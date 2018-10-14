@@ -16,7 +16,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        Application bootstrap = new Application();
+        Application bootstrap = new Application(args);
 
         if (!avaireJar.exists()) {
             Logger.info("AvaIre sources was not found!");

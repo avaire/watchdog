@@ -9,11 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Application extends Thread {
 
     private final UpdateState updateState;
     private final ShutdownState shutdownState;
+
+    private final String[] applicationArguments;
 
     private boolean running = true;
 
@@ -22,7 +25,9 @@ public class Application extends Thread {
 
     private Process process;
 
-    Application() {
+    Application(String[] args) {
+        this.applicationArguments = args;
+
         this.updateState = new UpdateState(this);
         this.shutdownState = new ShutdownState(this);
     }
@@ -92,9 +97,13 @@ public class Application extends Thread {
             .inheritIO();
 
         ArrayList<String> list = new ArrayList<>();
+
         list.add("java");
+        list.add("-Dfile.encoding=UTF-8");
         list.add("-jar");
         list.add("AvaIre.jar");
+
+        Collections.addAll(list, applicationArguments);
 
         pb.command(list);
 
