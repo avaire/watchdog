@@ -12,6 +12,10 @@ class ArgumentHandler {
             list.add("--version");
         }
 
+        if (commandLine.hasOption("music")) {
+            list.add("--music");
+        }
+
         if (commandLine.hasOption("no-colors")) {
             list.add("--no-colors");
         }

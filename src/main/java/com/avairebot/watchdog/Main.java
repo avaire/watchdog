@@ -22,6 +22,7 @@ public class Main {
         options.addOption(new Option("h", "help", false, "Displays this help menu."));
         options.addOption(new Option("v", "version", false, "Displays the current version of the application."));
         options.addOption(new Option("sc", "shard-count", true, "Sets the amount of shards the bot should start up."));
+        options.addOption(new Option("m", "music", false, "Enables music-only mode, disabling any feature that is not related to the music features."));
         options.addOption(new Option("nocolor", "no-colors", false, "Disables colors for commands and AI actions in the terminal."));
         options.addOption(new Option("d", "debug", false, "Enables debugging mode, this will log extra information to the terminal."));
         options.addOption(new Option("jarg", "jvm-argument", true, "Sets the JVM arguments that the application should be started with."));
