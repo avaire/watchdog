@@ -20,6 +20,10 @@ class ArgumentHandler {
             list.add("--no-colors");
         }
 
+        if (commandLine.hasOption("use-environment-variables")) {
+            list.add("--use-environment-variables");
+        }
+
         if (commandLine.hasOption("debug")) {
             list.add("--debug");
         }
