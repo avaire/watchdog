@@ -32,6 +32,13 @@ If the bot starts up normally you've successfully setup Watchdog to run [avaire]
 
     java -jar Watchdog.jar --help
 
+## Deploy AvaIre using Watchdog on Heroku
+You can deploy in a simple way to Heroku using the button below.
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+Before deploying, read [the configuration guide](https://avairebot.com/docs/master/configuration/), aswell as [the guide](https://avairebot.com/docs/master/heroku) regarding hosting with Heroku.
+
 ## License
 
 AvaIre Watchdog is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
