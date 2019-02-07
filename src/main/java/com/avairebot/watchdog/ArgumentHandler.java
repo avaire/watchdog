@@ -3,6 +3,7 @@ package com.avairebot.watchdog;
 import org.apache.commons.cli.CommandLine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class ArgumentHandler {
@@ -35,7 +36,7 @@ class ArgumentHandler {
 
     static void addJVMArguments(CommandLine commandLine, ArrayList<String> list) {
         if (commandLine.hasOption("jvm-argument")) {
-            list.add(commandLine.getOptionValue("jvm-argument", ""));
+            list.addAll(Arrays.asList(commandLine.getOptionValue("jvm-argument", "").split(" ")));
         }
     }
 }
