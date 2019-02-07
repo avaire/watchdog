@@ -38,6 +38,11 @@ public class Main {
                 System.exit(ExitCodes.EXIT_CODE_NORMAL);
             }
 
+            if (cmd.hasOption("version")) {
+                VersionFormatter.formatAndSend();
+                System.exit(ExitCodes.EXIT_CODE_NORMAL);
+            }
+
             new Application(cmd);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
