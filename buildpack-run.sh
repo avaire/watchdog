@@ -1,3 +1,9 @@
-# This is buildpack-run.sh
-# Cleaning any build artifacts, done before and after the gradle proces.
-rm -rf build/ && echo cleaned out build artifacts.
+# Cleaning build artifacts
+mv Watchdog.jar ../Watchdog.jar
+mv Procfile ../Procfile
+rm -r *
+mv ../Watchdog.jar .
+mv ../Procfile .
+# Adding in empty config files
+curl -o config.yml https://raw.githubusercontent.com/avaire/avaire/master/src/main/resources/config.yml
+curl -o constants.yml https://raw.githubusercontent.com/avaire/avaire/master/src/main/resources/constants.yml

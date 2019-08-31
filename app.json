@@ -1,6 +1,6 @@
 {
     "name": "AvaIre Watchdog",
-    "description": "AvaIre Watchdog is an application built for the Discord bot AvaIre, the app will help manage AvaIre by starting, restarting and updating the bot, the application also comes with a terminal that allows you to see the output and interact with the bot.",
+    "description": "AvaIre Watchdog serves to manage your AvaIre bot in new ways. It will help you manage AvaIre by starting, restarting and updating the bot, the application also comes with a terminal that allows you to see the output and interact with the bot.",
     "keywords": [
         "Heroku",
         "AvaIre",
@@ -20,7 +20,7 @@
     "website": "https://avairebot.com/",
     "repository": "https://github.com/avaire/watchdog",
     "logo": "https://imgur.com/H8RCD5F.png",
-    "success_url": "/stats",
+    "success_url": "/",
     "addons": [
         {
             "plan": "jawsdb:kitefin"
@@ -164,9 +164,14 @@
             "value": "avaire-auth-token"
         },
         "AVA_VOTE_LOCK_ENABLED": {
-            "description": "This option determines if the vote-locking feature should be enabled at all, if set to true, any command or feature using the 'vote' middleware will be restricted to users who have voted for the bot within the last 24 hours. You can it to true or false.",
+            "description": "This option determines if the vote-locking feature should be enabled at all, if set to true, any command or feature using the 'vote' middleware will be restricted to users who have voted for the bot within the last 12 hours. You can it to true or false.",
             "required": true,
             "value": "false"
+        },
+        "AVA_VOTE_LOCK_SYNC_WITH_PUBLIC_BOT": {
+            "description": "If this option is set to true, the vote check used within the !vote command will sync vote requests with the public bot(AvaIre) instead of DiscordBots, allowing self-hosters to support the official bot while still using the vote system.",
+            "required": true,
+            "value": "true"
         },
         "AVA_VOTE_LOCK_VOTE_SYNC_TOKEN": {
             "description": "This is the bot application API token for DBL(Discord Bot List), the API token is used to sync votes between the API and the bot during startup, so anyone who voted while the bot was offline will still get their rewards.",
@@ -193,6 +198,26 @@
             "required": false,
             "value": ""
         },
+        "AVA_FEEDBACK_CHANNEL": {
+            "description": "The Feedback channel is the text channel used alongside the !feedback command, any feedback messages the bot gets will be sent in the channel matching the given ID, if the channel doesn't exist, or the bot can't read & write to it, then the feedback command will simply not work.",
+            "required": false,
+            "value": ""
+        },
+        "AVA_CHANGELOG_CHANNEL": {
+            "description": "The changelog channel is the text channel used by the changelog command, the command will read messages from the channel and then use those as changelog messages, if the bot is bot can't read messages from the channel, the changelog command will simply not work.",
+            "required": false,
+            "value": ""
+        },
+        "AVA_ACTIVITY_LOG_CHANNEL": {
+            "description": "The activity log channel is used by Ava to log server activity, like when the bot joins or leaves a server, if the channel doesn't exist, or the bot can't read & write to it, then no activity log messages will be sent.",
+            "required": false,
+            "value": ""
+        },
+        "AVA_BOT_ADMIN_EXCEPTION_ROLE": {
+            "description": "The bot admin exception role is used within Ava to allow users with the role matching the ID below to invoke certain system commands, without giving them full bot access.",
+            "required": false,
+            "value": ""
+        },
         "GITHUB_REPO": {
             "description": "Copy part of the link after `https://github.com/` (e.g `chaNcharge/avaire`) and paste it here, required for auto updates with Scheduler!",
             "required": false,
@@ -209,9 +234,9 @@
             "value": ""
         },
         "UPSTREAM_REPO": {
-            "description": "The link to the upstream repo to update from, leave this as is for AvaIre",
+            "description": "The link to the upstream repo to update from, leave this as is for AvaIre Watchdog",
             "required": false,
-            "value": "avaire/avaire"
+            "value": "avaire/watchdog"
         },
         "UPSTREAM_BRANCH": {
             "description": "The branch of the upstream repo, leave this as is for AvaIre",
@@ -231,13 +256,10 @@
     },
     "buildpacks": [
         {
-            "url": "https://github.com/weibeld/heroku-buildpack-run"
-        },
-        {
             "url": "heroku/gradle"
         },
         {
-            "url": "https://github.com/650health/heroku-buildpack-run"
+            "url": "https://github.com/weibeld/heroku-buildpack-run"
         }
     ]
 }
