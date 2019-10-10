@@ -1,9 +1,3 @@
-# Cleaning build artifacts
-mv Watchdog.jar ../Watchdog.jar
-mv Procfile ../Procfile
-rm -r *
-mv ../Watchdog.jar .
-mv ../Procfile .
-# Adding in empty config files
-curl -o config.yml https://raw.githubusercontent.com/avaire/avaire/master/src/main/resources/config.yml
-curl -o constants.yml https://raw.githubusercontent.com/avaire/avaire/master/src/main/resources/constants.yml
+#!/bin/bash
+rm -rf $(find * -name "*" ! -name "Watchdog.jar" ! -name "Procfile" ! -name "plugins/*") # Remove everything except Procfile, Watchdog.jar and plugins folder
+java -jar Watchdog.jar # Create needed config files by running Watchdog.jar
