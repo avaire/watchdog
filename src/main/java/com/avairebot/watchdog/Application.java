@@ -3,6 +3,7 @@ package com.avairebot.watchdog;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.watchdog.states.ShutdownState;
 import com.avairebot.watchdog.states.UpdateState;
+import com.avairebot.watchdog.updater.NightlyBuildUpdater;
 import org.apache.commons.cli.CommandLine;
 
 import java.io.BufferedReader;
@@ -30,6 +31,8 @@ public class Application extends Thread {
 
         this.updateState = new UpdateState(this);
         this.shutdownState = new ShutdownState(this);
+
+        updateState.setUpdater(new NightlyBuildUpdater(this));
 
         if (!Main.avaireJar.exists()) {
             Logger.info("AvaIre sources was not found!");

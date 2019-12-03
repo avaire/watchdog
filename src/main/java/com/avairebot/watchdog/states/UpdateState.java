@@ -1,38 +1,30 @@
 package com.avairebot.watchdog.states;
 
 import com.avairebot.watchdog.Application;
-import com.avairebot.watchdog.Logger;
-import com.avairebot.watchdog.Main;
 import com.avairebot.watchdog.contacts.StateHandler;
-
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import com.avairebot.watchdog.contacts.Updater;
 
 public class UpdateState extends StateHandler {
+
+    private Updater updater;
 
     public UpdateState(Application application) {
         super(application);
     }
 
+    public void setUpdater(Updater updater) {
+        this.updater = updater;
+    }
+
     @Override
     public void run() {
-        Logger.info("Downloading the latest version using the nightly build.");
-
-        System.setProperty("http.agent", "Chrome");
-
+        if (updater == null) {
+            return;
+        }
+        
         try {
-            String nightBuildUrl = "https://avairebot.com/nightly-build.jar";
-            Files.copy(
-                new URL(nightBuildUrl).openStream(),
-                Paths.get(Main.avaireJar.toURI()),
-                StandardCopyOption.REPLACE_EXISTING
-            );
-
-            Logger.info("The nightly build has been downloaded successfully!");
-        } catch (IOException e) {
+            updater.run();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
