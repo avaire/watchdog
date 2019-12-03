@@ -1,6 +1,8 @@
+backgrounds/
 storage/
 avaire/
 docs/
+/constants.yml
 /config.json
 /config.yml
 *.class
