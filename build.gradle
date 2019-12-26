@@ -6,7 +6,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version '0.2.0'
+version '0.2.1'
 group 'com.avairebot'
 description = 'AvaIre Watchdog'
 mainClassName = 'com.avairebot.watchdog.Main'

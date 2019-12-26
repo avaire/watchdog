@@ -21,6 +21,10 @@ class ArgumentHandler {
             list.add("--no-colors");
         }
 
+        if (commandLine.hasOption("use-plugin-index")) {
+            list.add("--use-plugin-index");
+        }
+
         if (commandLine.hasOption("use-environment-variables")) {
             list.add("--use-environment-variables");
         }
